@@ -1,5 +1,7 @@
 from enum import Enum
 
+from sympy import O
+
 
 class Operators(Enum):
     ADD = "+"
@@ -7,6 +9,8 @@ class Operators(Enum):
     MUL = "*"
     DIV = "/"
     EXP = "^"
+    LPAREN = "("
+    RPAREN = ")"
 
 
 ops = {
@@ -15,4 +19,6 @@ ops = {
     "*": Operators.MUL,
     "/": Operators.DIV,
     "^": Operators.EXP,
+    "(": Operators.LPAREN,
+    ")": Operators.RPAREN
 }

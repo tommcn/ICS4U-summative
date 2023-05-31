@@ -20,7 +20,6 @@ def eval_postfix(p):
                     working_stack.push(lhs ** rhs)
         else:
             working_stack.push(top)
-
     return working_stack.pop()
 
 def main():
