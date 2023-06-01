@@ -13,7 +13,7 @@ operator_precedence = {
 }
 
 
-def infix_to_postfix(string):
+def infix_to_postfix(string: str):
     output = Queue()
     op_stack = Stack()
 
@@ -39,17 +39,19 @@ def infix_to_postfix(string):
                 while operator_precedence[op] <= operator_precedence[op_stack.top()]:
                     output.push(op_stack.pop())
                 op_stack.push(op)
-            continue
-
-        if char.isnumeric() or char == "-":
+        else:
             last_char_was_op = False
             buffer = char
-            while i + 1 < len(string) and (
-                (string[i + 1]).isnumeric()
-                or (string[i + 1] == "." and buffer.count(".") == 0)
-            ):
-                i += 1
-                buffer += string[i]
+            if char.isnumeric() or char == "-":
+                while (i + 1 < len(string)) and (
+                    (string[i + 1]).isnumeric()
+                    or (string[i + 1] == "." and buffer.count(".") == 0)
+                ):
+                    i += 1
+                    buffer += string[i]
+            else:
+                # TODO: Parse variables 
+                pass
             output.push(float(buffer))
             continue
 

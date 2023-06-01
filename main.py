@@ -1,9 +1,7 @@
-from numpy import var
+from string import ascii_letters
+
 from eval_postfix import eval_postfix
 from infix_to_postfix import infix_to_postfix
-from operators import Operators
-from adt import Stack
-from string import ascii_letters
 
 ACCEPTABLE_VARIABLE_CHARACTERS = ascii_letters + "_"
 
