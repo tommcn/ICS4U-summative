@@ -1,4 +1,4 @@
-from stack import Stack
+from adt import Stack
 from operators import Operators
 
 def eval_postfix(p):

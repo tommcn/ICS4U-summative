@@ -1,4 +1,4 @@
-from stack import Stack, Queue
+from adt import Stack, Queue
 from operators import Operators, ops
 from eval_postfix import eval_postfix
 
@@ -52,7 +52,7 @@ def infix_to_postfix(string):
                 op_stack.pop() # Remove LPAREN
             else:
                 print("5")
-                while (operator_precedence[op] <= operator_precedence[op_stack.top()]):
+                while operator_precedence[op] <= operator_precedence[op_stack.top()]:
                     output.push(op_stack.pop())
                 op_stack.push(op)
             continue
@@ -65,6 +65,6 @@ def infix_to_postfix(string):
 
 
 if __name__ == "__main__":
-    out = infix_to_postfix("3*2+6/4")
+    out = infix_to_postfix("(1+2)*3")
     r = eval_postfix(out)
     print(r)

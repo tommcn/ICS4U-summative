@@ -2,8 +2,8 @@ import unittest
 
 from eval_postfix import eval_postfix
 from operators import Operators
-from stack import Stack
-
+from adt import Stack
+from infix_to_postfix import infix_to_postfix
 
 
 class TestEvalPostix(unittest.TestCase):
@@ -37,6 +37,13 @@ class TestEvalPostix(unittest.TestCase):
         s = Stack.from_list([100, 200, Operators.ADD, 2, Operators.DIV, 5, Operators.MUL, 7, Operators.ADD])
         self.assertEqual(eval_postfix(s), 757)
         
+class TestInfixToPostfix(unittest.TestCase):
+    def test_infix_to_postfix(self):
+        self.assertEqual(infix_to_postfix("3*2+6/4").get_data(), [3.0, 2.0, Operators.MUL, 6.0, 4.0, Operators.DIV, Operators.ADD])
+        self.assertEqual(infix_to_postfix("1+2*3").get_data(), [1.0, 2.0, 3.0, Operators.MUL, Operators.ADD])
+        self.assertEqual(infix_to_postfix("(1+2)*3").get_data(), [1.0, 2.0, Operators.ADD, 3.0, Operators.MUL,])
+        self.assertEqual(infix_to_postfix("1+2+3+4").get_data(), [1.0, 2.0, Operators.ADD, 3.0, Operators.ADD, 4.0, Operators.ADD])
+        self.assertEqual(infix_to_postfix("1.5*2.5+3.5/4.5").get_data(), [1.5, 2.5, Operators.MUL, 3.5, 4.5, Operators.DIV, Operators.ADD])
 
 
 if __name__ == '__main__':
