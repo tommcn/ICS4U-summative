@@ -13,10 +13,6 @@ operator_precedence = {
 }
 
 
-def isnumeric(c):
-    return c.isnumeric() or c == "."
-
-
 def infix_to_postfix(string):
     output = Queue()
     op_stack = Stack()
@@ -25,16 +21,17 @@ def infix_to_postfix(string):
     buffer = ""
     string += ")"
     op_stack.push(Operators.LPAREN)
-    last_char_was_op = False
+    last_char_was_op = True
     while i + 1 < len(string):
         i += 1
         char = string[i]
-        if char in ops and (not last_char_was_op):
+        if char in ops and (not last_char_was_op or char == "("):
             last_char_was_op = True
             op = ops[char]
             if op == Operators.LPAREN:
                 op_stack.push(op)
             elif op == Operators.RPAREN:
+                last_char_was_op = False
                 while op_stack.top() != Operators.LPAREN:
                     output.push(op_stack.pop())
                 op_stack.pop()  # Remove LPAREN
@@ -64,6 +61,6 @@ def infix_to_postfix(string):
 
 
 if __name__ == "__main__":
-    out = infix_to_postfix("-2+(-3)")
+    out = infix_to_postfix("-2-9")
     r = eval_postfix(out)
     print(r)
