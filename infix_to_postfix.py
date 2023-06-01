@@ -8,8 +8,8 @@ operator_precedence = {
     Operators.MUL: 5,
     Operators.DIV: 5,
     Operators.EXP: 10,
-    Operators.RPAREN: -1,
-    Operators.LPAREN: 15,
+    Operators.RPAREN: 0,
+    Operators.LPAREN: 0,
 }
 
 
@@ -23,38 +23,37 @@ def infix_to_postfix(string):
 
     i = -1
     buffer = ""
+    string += ")"
+    op_stack.push(Operators.LPAREN)
     while i + 1 < len(string):
         i += 1
+        print()
         print("Output Stack:", output)
         print("Operator Stack", op_stack)
         char = string[i]
-        print(i)
         # Rewrite to while loop lol
         if isnumeric(char):
+            print("1")
             buffer = char
             while i + 1 < len(string) and isnumeric(string[i+1]):
                 i+=1
-                buffer += string[1]
+                buffer += string[i]
             output.push(float(buffer))
             continue
         if char in ops:
             op = ops[char]
-            if op_stack.is_empty():
-                op_stack.push(op)
-            elif op == Operators.LPAREN:
+            if op == Operators.LPAREN:
+                print("2")
                 op_stack.push(op)
             elif op == Operators.RPAREN:
+                print("3")
                 while op_stack.top() != Operators.LPAREN:
                     output.push(op_stack.pop())
-                op_stack.pop()
-            elif operator_precedence[op] > operator_precedence[op_stack.top()]:
-                op_stack.push(op)
-            elif operator_precedence[op] < operator_precedence[op_stack.top()]:
-                while (not op_stack.is_empty() and 
-                        operator_precedence[op] > operator_precedence[op_stack.top()]):
-                    output.push(op_stack.pop())
-                op_stack.push(op)
+                op_stack.pop() # Remove LPAREN
             else:
+                print("5")
+                while (operator_precedence[op] <= operator_precedence[op_stack.top()]):
+                    output.push(op_stack.pop())
                 op_stack.push(op)
             continue
 
@@ -66,6 +65,6 @@ def infix_to_postfix(string):
 
 
 if __name__ == "__main__":
-    out = infix_to_postfix("2+9*2/2")
+    out = infix_to_postfix("3*2+6/4")
     r = eval_postfix(out)
     print(r)
