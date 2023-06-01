@@ -14,7 +14,7 @@ operator_precedence = {
 
 
 def isnumeric(c):
-    return c.isnumeric() or c == "." or c == "-"
+    return c.isnumeric() or c == "."
 
 
 def infix_to_postfix(string):
@@ -25,36 +25,35 @@ def infix_to_postfix(string):
     buffer = ""
     string += ")"
     op_stack.push(Operators.LPAREN)
+    last_char_was_op = False
     while i + 1 < len(string):
         i += 1
-        print()
-        print("Output Stack:", output)
-        print("Operator Stack", op_stack)
         char = string[i]
-        # Rewrite to while loop lol
-        if isnumeric(char):
-            print("1")
-            buffer = char
-            while i + 1 < len(string) and isnumeric(string[i+1]):
-                i+=1
-                buffer += string[i]
-            output.push(float(buffer))
-            continue
-        if char in ops:
+        if char in ops and (not last_char_was_op):
+            last_char_was_op = True
             op = ops[char]
             if op == Operators.LPAREN:
-                print("2")
                 op_stack.push(op)
             elif op == Operators.RPAREN:
-                print("3")
                 while op_stack.top() != Operators.LPAREN:
                     output.push(op_stack.pop())
-                op_stack.pop() # Remove LPAREN
+                op_stack.pop()  # Remove LPAREN
             else:
-                print("5")
                 while operator_precedence[op] <= operator_precedence[op_stack.top()]:
                     output.push(op_stack.pop())
                 op_stack.push(op)
+            continue
+
+        if char.isnumeric() or char == "-":
+            last_char_was_op = False
+            buffer = char
+            while i + 1 < len(string) and (
+                (string[i + 1]).isnumeric()
+                or (string[i + 1] == "." and buffer.count(".") == 0)
+            ):
+                i += 1
+                buffer += string[i]
+            output.push(float(buffer))
             continue
 
     while not op_stack.is_empty():
@@ -65,6 +64,6 @@ def infix_to_postfix(string):
 
 
 if __name__ == "__main__":
-    out = infix_to_postfix("(1+2)*3")
+    out = infix_to_postfix("-2+(-3)")
     r = eval_postfix(out)
     print(r)
