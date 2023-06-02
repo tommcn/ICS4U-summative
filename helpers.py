@@ -1,0 +1,1 @@
+VariablesType = dict[str, float]

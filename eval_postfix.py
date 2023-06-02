@@ -1,7 +1,8 @@
 from adt import Stack
+from helpers import VariablesType
 from operators import Operators
 
-def eval_postfix(p, v):
+def eval_postfix(p: Stack, v: VariablesType) -> float:
     working_stack = Stack()
     while top := p.pop():
         if isinstance(top, Operators):
