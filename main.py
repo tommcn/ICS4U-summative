@@ -12,10 +12,8 @@ OFNAME = "McNamer_Tomas_output.txt"
 def pipeline(expr: str, variables):
     varname = None
     if "=" in expr:
-        print("Assignment detected")
         varname, expr = expr.split("=")
     postfix = infix_to_postfix(expr)
-    print("|", varname, expr, postfix)
     result = eval_postfix(postfix, variables)
     if varname is not None:
         variables[varname] = result
