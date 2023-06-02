@@ -42,27 +42,32 @@ def infix_to_postfix(string: str):
         else:
             last_char_was_op = False
             buffer = char
-            if char.isnumeric() or char == "-":
+            if char.isnumeric() or char == "-": # number literal
                 while (i + 1 < len(string)) and (
                     (string[i + 1]).isnumeric()
                     or (string[i + 1] == "." and buffer.count(".") == 0)
                 ):
                     i += 1
                     buffer += string[i]
-            else:
-                # TODO: Parse variables 
-                pass
-            output.push(float(buffer))
+                output.push(float(buffer))
+
+            else:  # variable
+                while i + 1 < len(string) and (
+                    string[i+1].isalnum()
+                ):
+                    i += 1
+                    buffer += string[i]
+                output.push(buffer)
             continue
 
-    while not op_stack.is_empty():
+    while not op_stack.is_empty() and not op_stack.top() == Operators.LPAREN:
         output.push(op_stack.pop())
 
-    print("foutput", output)
     return output
 
 
 if __name__ == "__main__":
-    out = infix_to_postfix("-2-9")
-    r = eval_postfix(out)
+    out = infix_to_postfix("res1+2")
+    print(out)
+    r = eval_postfix(out, {'res1': 2})
     print(r)

@@ -11,12 +11,15 @@ OFNAME = "McNamer_Tomas_output.txt"
 
 def pipeline(expr: str, variables):
     varname = None
-    if expr[0] in ACCEPTABLE_VARIABLE_CHARACTERS:
+    if "=" in expr:
+        print("Assignment detected")
         varname, expr = expr.split("=")
     postfix = infix_to_postfix(expr)
-    result = eval_postfix(postfix)
+    print("|", varname, expr, postfix)
+    result = eval_postfix(postfix, variables)
     if varname is not None:
         variables[varname] = result
+        result = varname + "=" + str(result)
 
     return result, variables
 
@@ -29,9 +32,8 @@ def main():
     }
     with open(IFNAME, "r", encoding="UTF-8") as f:
         for line in f.readlines():
-            result, variables = pipeline(line, variables)
+            result, variables = pipeline(line.rstrip(), variables)
             results.append(str(result) + "\n")
-            print(variables)
 
     with open(OFNAME, "w", encoding="UTF-8") as f:
         f.writelines(results)

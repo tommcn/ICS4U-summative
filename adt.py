@@ -23,7 +23,7 @@ class Stack:
 
     def pop(self):
         if len(self.__data) == 0:
-            return False
+            return None
 
         return self.__data.pop(-1)
 
@@ -52,7 +52,7 @@ class Queue:
 
     def pop(self):
         if len(self.__data) == 0:
-            return False
+            return None
 
         return self.__data.pop(0)
 
