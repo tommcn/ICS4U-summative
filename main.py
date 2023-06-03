@@ -1,13 +1,11 @@
 """
 Tomas McNamer
 """
-from string import ascii_letters
 
 from eval_postfix import eval_postfix
 from helpers import VariablesType
 from infix_to_postfix import infix_to_postfix
 
-ACCEPTABLE_VARIABLE_CHARACTERS = ascii_letters + "_"
 
 IFNAME = "McNamer_Tomas_input.txt"
 OFNAME = "McNamer_Tomas_output.txt"

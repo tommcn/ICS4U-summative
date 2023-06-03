@@ -1,3 +1,11 @@
+"""
+Tomas McNamer
+eval_postfix.py
+
+This modules contains the function eval_postfix, which takes a postfix expression
+and evaluates it.
+"""
+
 from adt import Stack, Queue
 from helpers import VariablesType
 from operators import Operators
@@ -15,17 +23,25 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
     Returns:
         float: The result of the expression (beware of floating point arithmetic inacuracy)
     """
-    working_stack = Stack()
+    working_stack = Stack() # The stack that houses the intermediate results
+
+    # Walrus operator, this is a while loop that also assigns the top of the stack to
+    # the variable top, and runs until the stack is empty (ie. falsy)
     while top := postfix.pop():
+        # If the top of the stack is an operator, then we can do maths with it
         if isinstance(top, Operators):
+            # We need to pop the operands in reverse order as they are in a stack
             rhs = working_stack.pop()
             lhs = working_stack.pop()
 
+            # If either of the operands are variables, we need to look them up in the
+            # variables dictionary
             if isinstance(rhs, str):
                 rhs = variables[rhs]
             if isinstance(lhs, str):
                 lhs = variables[lhs]
 
+            # Match the operator and do the corresponding operation
             match top:
                 case Operators.ADD:
                     working_stack.push(lhs + rhs)
@@ -37,19 +53,16 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
                     working_stack.push(lhs / rhs)
                 case Operators.EXP:
                     working_stack.push(lhs ** rhs)
-                case _:
+                case _: # Should be unreachable, but just in case something goes wrong
                     raise NotImplementedError
         else:
             working_stack.push(top)
-    return working_stack.pop()
 
-def main():
-    """Example program
-    """
-    equation = Stack.from_list([2, 3, 1, Operators.MUL, Operators.ADD, 9, Operators.SUB])
-    res = eval_postfix(equation, {})
-    print(res)
+    # The result is the last thing left in the stack
+    return working_stack.pop()
 
 
 if __name__ == "__main__":
-    main()
+    equation = Stack.from_list([2, 3, 1, Operators.MUL, Operators.ADD, 9, Operators.SUB])
+    res = eval_postfix(equation, {})
+    print(res)
