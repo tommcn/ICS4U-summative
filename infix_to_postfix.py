@@ -13,7 +13,7 @@ operator_precedence = {
 }
 
 
-def infix_to_postfix(string: str) -> Stack:
+def infix_to_postfix(string: str) -> Queue:
     output = Queue()
     op_stack = Stack()
 

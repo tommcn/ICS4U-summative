@@ -1,3 +1,6 @@
+"""
+Tomas McNamer
+"""
 from string import ascii_letters
 
 from eval_postfix import eval_postfix

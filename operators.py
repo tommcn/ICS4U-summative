@@ -1,7 +1,5 @@
 from enum import Enum
 
-from sympy import O
-
 
 class Operators(Enum):
     ADD = "+"

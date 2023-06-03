@@ -49,6 +49,49 @@ class TestEvalPostix(unittest.TestCase):
         )
         self.assertEqual(eval_postfix(s, {}), 757)
 
+    def test_eval_variables(self):
+        self.assertEqual(
+            eval_postfix(
+                Stack.from_list([1, 2, "var1", Operators.MUL, Operators.ADD]),
+                {"var1": 3},
+            ),
+            7,
+        )
+        self.assertEqual(
+            eval_postfix(
+                Stack.from_list(["v1", "v2", Operators.ADD, "v3", Operators.MUL]),
+                {"v1": 1, "v2": 2, "v3": 3},
+            ),
+            9,
+        )
+        self.assertEqual(
+            eval_postfix(
+                Stack.from_list([1, 2, Operators.SUB, "a_long_var", Operators.EXP]),
+                {"a_long_var": 3},
+            ),
+            -1,
+        )
+        # Almost eequal because of floating point precision
+        self.assertAlmostEqual(
+            eval_postfix(
+                Stack.from_list(
+                    [
+                        2,
+                        3,
+                        Operators.EXP,
+                        4,
+                        Operators.MUL,
+                        "b",
+                        Operators.DIV,
+                        "a",
+                        Operators.SUB,
+                    ]
+                ),
+                {"a": 9, "b": 5},
+            ),
+            -2.6,
+        )
+
 
 class TestInfixToPostfix(unittest.TestCase):
     def test_infix_to_postfix_order(self):
@@ -99,6 +142,38 @@ class TestInfixToPostfix(unittest.TestCase):
             infix_to_postfix("-2.5*(9-6.2)").get_data(),
             [-2.5, 9.0, 6.2, Operators.SUB, Operators.MUL],
         )
+
+
+from main import pipeline, VariablesType
+
+class TestPipeline(unittest.TestCase):
+    def test_pipeline_without_assignment(self):
+        variables: VariablesType = {}
+        result, variables = pipeline("3*2+6/4", variables)
+        self.assertEqual(result, 7.5)
+        self.assertEqual(variables, {})
+
+        result, variables = pipeline("1+2*3", variables)
+        self.assertEqual(result, 7.0)
+        self.assertEqual(variables, {})
+
+        result, variables = pipeline("(1+2)*3", variables)
+        self.assertEqual(result, 9.0)
+        self.assertEqual(variables, {})
+
+    def test_pipeline_with_assignment(self):
+        variables: VariablesType = {}
+        result, variables = pipeline("a=3*2+6/4", variables)
+        self.assertEqual(result, "a=7.5")
+        self.assertEqual(variables, {"a": 7.5})
+
+        result, variables = pipeline("b=1+2*3", variables)
+        self.assertEqual(result, "b=7.0")
+        self.assertEqual(variables, {"a": 7.5, "b": 7.0})
+
+        result, variables = pipeline("c=(a+b)*2", variables)
+        self.assertEqual(result, "c=29.0")
+        self.assertEqual(variables, {"a": 7.5, "b": 7.0, "c": 29.0})
 
 
 if __name__ == "__main__":
