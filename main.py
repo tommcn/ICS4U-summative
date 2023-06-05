@@ -17,6 +17,7 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
         varname, expr = expr.split("=")
     postfix = infix_to_postfix(expr)
     result = eval_postfix(postfix, variables)
+    variables["ANS"] = result
     if varname is not None:
         variables[varname] = result
         result = varname + "=" + str(result)
@@ -28,7 +29,8 @@ def main():
     results = []
     variables = {
         "PI": 3.14159,
-        "e": 2.71828
+        "e": 2.71828,
+        "ANS": None
     }
     with open(IFNAME, "r", encoding="UTF-8") as f:
         for line in f.readlines():
