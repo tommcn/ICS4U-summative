@@ -7,7 +7,7 @@ and evaluates it.
 """
 
 from adt import Stack, Queue
-from helpers import VariablesType
+from helpers import VariableNotFound, VariablesType
 from operators import Operators
 
 def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
@@ -24,10 +24,9 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
         float: The result of the expression (beware of floating point arithmetic inacuracy)
     """
     working_stack = Stack() # The stack that houses the intermediate results
-
     # Walrus operator, this is a while loop that also assigns the top of the stack to
     # the variable top, and runs until the stack is empty (ie. falsy)
-    while top := postfix.pop():
+    while (top := postfix.pop()) is not None:
         # If the top of the stack is an operator, then we can do maths with it
         if isinstance(top, Operators):
             # We need to pop the operands in reverse order as they are in a stack
@@ -37,9 +36,16 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
             # If either of the operands are variables, we need to look them up in the
             # variables dictionary
             if isinstance(rhs, str):
-                rhs = variables[rhs]
+                try:
+                    rhs = variables[rhs]
+                except KeyError as err:
+                    raise VariableNotFound(f"The variable {rhs} is undefined") from err
+
             if isinstance(lhs, str):
-                lhs = variables[lhs]
+                try:
+                    lhs = variables[lhs]
+                except KeyError as err:
+                    raise VariableNotFound(f"The variable {lhs} is undefined") from err
 
             # Match the operator and do the corresponding operation
             match top:
@@ -50,18 +56,25 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
                 case Operators.SUB:
                     working_stack.push(lhs - rhs)
                 case Operators.DIV:
+                    print(lhs, rhs, lhs/rhs)
                     working_stack.push(lhs / rhs)
                 case Operators.EXP:
                     working_stack.push(lhs ** rhs)
                 case _: # Should be unreachable, but just in case something goes wrong
                     raise NotImplementedError
         else:
+            if isinstance(top, str):
+                try:
+                    top = variables[top]
+                except KeyError as err:
+                    raise VariableNotFound(f"The variable {top} is undefined") from err
             working_stack.push(top)
 
     # The result is the last thing left in the stack
     return working_stack.pop()
 
 
+# Example program
 if __name__ == "__main__":
     equation = Stack.from_list([2, 3, 1, Operators.MUL, Operators.ADD, 9, Operators.SUB])
     res = eval_postfix(equation, {})

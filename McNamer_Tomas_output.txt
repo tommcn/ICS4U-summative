@@ -1,2 +1,1 @@
-x=-1.4
--3.1999999999999993
+E!>ZeroDivisionError: float division by zero

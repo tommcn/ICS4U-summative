@@ -5,7 +5,10 @@ infix_to_postfix.py
 This module house the infix_to_postfix function, which converts an infix
 expression to postfix notation.
 """
+from string import ascii_letters
+
 from adt import Stack, Queue
+from helpers import ImproperExpression
 from operators import Operators, ops
 from eval_postfix import eval_postfix
 
@@ -106,7 +109,7 @@ def infix_to_postfix(string: str) -> Queue:
                 output.push(float(buffer))
 
             # We assume the following token is a variable name, so parse it
-            else:
+            elif char in ascii_letters:
                 # While the next character is alphanumeric, append it to the buffer (note that
                 # this allows for variable names to contain numbers, but not start with them)
                 while i + 1 < len(string) and (
@@ -117,6 +120,10 @@ def infix_to_postfix(string: str) -> Queue:
 
                 # Push the variable name as is into the output
                 output.push(buffer)
+            else:
+                raise ImproperExpression(
+                    f"The expression {string} is not a valid one (hint: look at character {i})"
+                )
             continue
 
     # Finally pop all remaining operators into the output
