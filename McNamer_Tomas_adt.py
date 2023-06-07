@@ -27,9 +27,6 @@ class Stack:
 
         return self.__data.pop(-1)
 
-    def reverse(self):
-        self.__data = self.__data[::-1]
-
     def __str__(self):
         return str(self.__data)
 

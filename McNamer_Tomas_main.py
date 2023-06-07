@@ -2,9 +2,9 @@
 Tomas McNamer
 """
 
-from eval_postfix import eval_postfix
-from helpers import VariablesType
-from infix_to_postfix import infix_to_postfix
+from McNamer_Tomas_eval_postfix import eval_postfix
+from McNamer_Tomas_helpers import VariablesType
+from McNamer_Tomas_infix_to_postfix import infix_to_postfix
 
 
 IFNAME = "McNamer_Tomas_input.txt"

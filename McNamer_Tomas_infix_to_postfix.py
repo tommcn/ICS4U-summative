@@ -7,10 +7,10 @@ expression to postfix notation.
 """
 from string import ascii_letters
 
-from adt import Stack, Queue
-from helpers import ImproperExpression
-from operators import Operators, ops
-from eval_postfix import eval_postfix
+from McNamer_Tomas_adt import Stack, Queue
+from McNamer_Tomas_helpers import ImproperExpression
+from McNamer_Tomas_operators import Operators, ops
+from McNamer_Tomas_eval_postfix import eval_postfix
 
 
 # A dictionary containing the precedence of each operator

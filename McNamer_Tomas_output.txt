@@ -1,1 +1,9 @@
+6.0
+56.0
 E!>ZeroDivisionError: float division by zero
+E!>VariableNotFound: The variable aiuge is undefined
+E!>VariableNotFound: The variable ij is undefined
+res1=18.0
+res2=-5.0
+-5.0
+-3.6

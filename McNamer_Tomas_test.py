@@ -1,9 +1,9 @@
 import unittest
 
-from eval_postfix import eval_postfix
-from operators import Operators
-from adt import Stack
-from infix_to_postfix import infix_to_postfix
+from McNamer_Tomas_eval_postfix import eval_postfix
+from McNamer_Tomas_operators import Operators
+from McNamer_Tomas_adt import Stack
+from McNamer_Tomas_infix_to_postfix import infix_to_postfix
 
 
 class TestEvalPostix(unittest.TestCase):
@@ -144,7 +144,7 @@ class TestInfixToPostfix(unittest.TestCase):
         )
 
 
-from main import pipeline, VariablesType
+from McNamer_Tomas_main import pipeline, VariablesType
 
 class TestPipeline(unittest.TestCase):
     def test_pipeline_without_assignment(self):

@@ -6,9 +6,9 @@ This modules contains the function eval_postfix, which takes a postfix expressio
 and evaluates it.
 """
 
-from adt import Stack, Queue
-from helpers import VariableNotFound, VariablesType
-from operators import Operators
+from McNamer_Tomas_adt import Stack, Queue
+from McNamer_Tomas_helpers import VariableNotFound, VariablesType
+from McNamer_Tomas_operators import Operators
 
 def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
     """Evaluates an expression in postfix form
@@ -56,7 +56,6 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
                 case Operators.SUB:
                     working_stack.push(lhs - rhs)
                 case Operators.DIV:
-                    print(lhs, rhs, lhs/rhs)
                     working_stack.push(lhs / rhs)
                 case Operators.EXP:
                     working_stack.push(lhs ** rhs)
