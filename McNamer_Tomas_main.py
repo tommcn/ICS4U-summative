@@ -1,26 +1,29 @@
-"""
-Tomas McNamer
-"""
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_main.py
+# DESCRIPTION: Houses the main input/output of the system.
+###############################################################################
 from McNamer_Tomas_eval_postfix import eval_postfix
 from McNamer_Tomas_helpers import VariablesType
 from McNamer_Tomas_infix_to_postfix import infix_to_postfix
 
-
+# Input and output file names
 IFNAME = "McNamer_Tomas_input.txt"
 OFNAME = "McNamer_Tomas_output.txt"
 
-
+###############################################################################
+# FCN NAME: pipeline
+# DESCRIPTION: Runs the whole program from an original string to a numerical
+#               result
+# INPUTS: expr - str - The infix expression as a string
+#         variables - VariablesType - The variables to be used during evaluation
+# OUTPUTS: tuple[str | float, VariablesType] - A tuple that contains the result
+#           and the possibly modified variable dictionnary
+# ALGORITHM:
+# TODO
+###############################################################################
 def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, VariablesType]:
-    """Runs the whole program from an original string to a numerical result
-
-    Args:
-        expr (str): The expression, as a string in infix form
-        variables (VariablesType): The variables to be used during evaluation
-
-    Returns:
-        tuple[str | float, VariablesType]: Two variables, 1: the result as a float (or string in
-        its a variable assignment) and the modified variables dictionnary
-    """
     varname = None
     # If the equal sign is present, then the expression is a variable assignment (eg. result=1+3)
     # We split the expression into two parts: variable (eg. 'result') and postfix
@@ -46,7 +49,14 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
     # by reference, but this behaviour can be counter-intuitive
     return result, variables
 
-
+###############################################################################
+# FCN NAME: main
+# DESCRIPTION: The entrypoint of the file v
+# INPUTS: None
+# OUTPUTS: None
+# ALGORITHM:
+# TODO
+###############################################################################
 def main():
     """Main program, this reads from the input file, and outputs result to the output file"""
     results = []

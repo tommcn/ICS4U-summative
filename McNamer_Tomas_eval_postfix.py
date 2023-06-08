@@ -1,30 +1,46 @@
-"""
-Tomas McNamer
-eval_postfix.py
-
-This modules contains the function eval_postfix, which takes a postfix expression
-and evaluates it.
-"""
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_eval_postfix.py
+# DESCRIPTION: Houses the function responsible for the evaluating postfix
+#              expressions.
+###############################################################################
 from math import factorial
 
 from McNamer_Tomas_adt import Stack, Queue
 from McNamer_Tomas_helpers import VariableNotFound, VariablesType
 from McNamer_Tomas_operators import Operators, SINGLE_OPERAND_OPERATORS
 
-
+###############################################################################
+# FCN NAME: eval_postfix
+# DESCRIPTION: Evaluates an expression in postfix form
+# INPUTS: postfix - Queue - The postfix expression to evaluate
+#         variables - VariablesType - The variables to use when evaluating the
+#               expression
+# OUTPUTS: float - The result of the expression
+# RAISES: NotImplementedError - Technically unreachable, throws when
+#               encountering an unknown operator
+# ALGORITHM:
+#   SET working_stack TO NEW stack
+#   WHILE postfix NOT EMPTY
+#       IF postfix's top IS an operator
+#           IF operator REQUIRES two operands
+#               POP rhs and lhs FROM working stack
+#           ELSE
+#               POP rhs FROM working stack
+#           ENDIF
+#           IF EITHER operands ARE string
+#               UPDATE them to the value from variables dict
+#           ENDIF
+#           EVALUATE the operator with rhs (and possibly lhs) INTO result
+#           PUSH TO working stack VALUE result
+#       ELSE
+#           PUSH TO working stack VALUE postfix's top
+#       ENDIF
+#   ENDWHILE
+#   RETURN TOP OF working_stack
+###############################################################################
 def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
-    """Evaluates an expression in postfix form
-
-    Args:
-        postfix (Queue): The postfix expression to evalute
-        variables (VariablesType): A dictionary of variables to be used when encoutering a variable
-
-    Raises:
-        NotImplementedError: Technically unreachable, throws when encountering an unknown operator
-
-    Returns:
-        float: The result of the expression (beware of floating point arithmetic inacuracy)
-    """
     working_stack = Stack()  # The stack that houses the intermediate results
 
     # Walrus operator, this is a while loop that also assigns the top of the stack to

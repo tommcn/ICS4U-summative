@@ -1,10 +1,10 @@
-"""
-Tomas McNamer
-infix_to_postfix.py
-
-This module house the infix_to_postfix function, which converts an infix
-expression to postfix notation.
-"""
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_infix_to_postfix.py
+# DESCRIPTION: Houses the infix_to_postfix function, which converts an infix
+#                   expression to postfix notation.
+###############################################################################
 from string import ascii_letters
 
 from McNamer_Tomas_adt import Stack, Queue
@@ -28,16 +28,56 @@ operator_precedence = {
     Operators.LPAREN: 0,
 }
 
-
+###############################################################################
+# FCN NAME: infix_to_postfix
+# DESCRIPTION: Convert and infix expression to a postfix one
+# INPUTS: string - str - The input string
+# OUTPUTS: Queue - A queue containing the postfix expression
+# ALGORITHM:
+#   SET output TO NEW Queue
+#   SET operator stack TO NEW stack
+#   SET i TO -1
+#   SET buffer TO EMPTY STRING
+#   ADD ) TO string
+#   PUSH TO operator stack VALUE (
+#   SET expecting number TO TRUE
+#
+#   WHILE i SMALLER THEN length of string
+#       IF operator encountered
+#           SET expecting number TO true
+#           IF operator IS (
+#               PUSH TO operator stack VALUE (
+#           ELSEIF operator IS )
+#               UNTIL a ( IS reached DO
+#                   PUSH TO ouput VALUE (CALL pop ON operator stack)
+#               ENDUNTIL
+#               CALL pop ON operator stack
+#           ELSE
+#               UNTIL an operator with smaller precedence is reached DO
+#                   PUSH TO output VALUE (CALL pop ON operator stack)
+#               ENDUNTIL
+#               PUSH TO operator stack VALUE operator
+#               IF operator only required one operand
+#                   SET expecting number TO false
+#               ENDIF
+#           ELSE
+#               SET expecting number TO false
+#               SET buffer TO character
+#               UNTIL end of number or variable is reached DO
+#                   ADD TO buffer next character
+#               ENDUNTIL
+#               IF buffer IS a number
+#                   PARSE buffer AS float INTO buffer
+#               ENDIF
+#               PUSH TO output VALUE buffer
+#           ENDIF
+#   ENDWHILE
+#   WHILE operator stack is not empty
+#       PUSH TO output VALUE (CALL pop ON operator stack)
+#   ENDWHILE
+#   RETURN output
+###############################################################################
 def infix_to_postfix(string: str) -> Queue:
-    """Takes an infix expression and converts it to postfix notation.
-
-    Args:
-        string (str): The infix expression to convert.
-
-    Returns:
-        Queue: The corresponding postfix expression.
-    """
     output = Queue()
     operator_stack = Stack()
 
@@ -49,12 +89,12 @@ def infix_to_postfix(string: str) -> Queue:
     string += ")"
     operator_stack.push(Operators.LPAREN)
 
-    # Whether or not the last character was an operator
+    # Whether or not we are expecting a number
     # This is useful for parsing negative numbers, as we would be
     # able to tell whether a number is expected (ie. a '-' is to be
     # interpreted as a negative sign) or not (ie. a '-' is a subtraction
     # operator)
-    last_char_was_op = True
+    expecting_number = True
 
     while i + 1 < len(string):  # Iterate through the string
         i += 1
@@ -64,8 +104,8 @@ def infix_to_postfix(string: str) -> Queue:
         # (ie. the last character was not an operator). Note the exception
         # for the opening parenthesis, which can be seen after an operator
         # eg. '2*(3+4)'
-        if char in ops and (not last_char_was_op or char == "("):
-            last_char_was_op = True
+        if char in ops and (not expecting_number or char == "("):
+            expecting_number = True
             operator = ops[char]
 
             # Mark the beginning of a parenthesized group
@@ -77,7 +117,7 @@ def infix_to_postfix(string: str) -> Queue:
             # If the operator is a closing parenthesis, pop all operators
             # into the output until the matching opening parenthesis is found
             elif operator == Operators.RPAREN:
-                last_char_was_op = False  # Parentheses are not operators
+                expecting_number = False  # Parentheses are not operators
                 while operator_stack.top() != Operators.LPAREN:
                     output.push(operator_stack.pop())
                 operator_stack.pop()  # Remove the opening parenthesis from the stack
@@ -91,12 +131,15 @@ def infix_to_postfix(string: str) -> Queue:
                 ):
                     output.push(operator_stack.pop())
                 operator_stack.push(operator)
+
+            # If the operator only expects one operand (eg. factorial), then the
+            # next token will be another operator (eg. 5! + 2)
             if operator in SINGLE_OPERAND_OPERATORS:
-                last_char_was_op = False
+                expecting_number = False
 
         # We are expecting a number or variable, the can go directly into the output
         else:
-            last_char_was_op = False
+            expecting_number = False
             buffer = char
 
             # If the first character is a negative sign or a number, we have
