@@ -9,7 +9,7 @@ from string import ascii_letters
 
 from McNamer_Tomas_adt import Stack, Queue
 from McNamer_Tomas_helpers import ImproperExpression
-from McNamer_Tomas_operators import Operators, ops
+from McNamer_Tomas_operators import Operators, ops, SINGLE_OPERAND_OPERATORS
 from McNamer_Tomas_eval_postfix import eval_postfix
 
 
@@ -23,6 +23,7 @@ operator_precedence = {
     Operators.MUL: 5,
     Operators.DIV: 5,
     Operators.EXP: 10,
+    Operators.FCT: 15,
     Operators.RPAREN: 0,
     Operators.LPAREN: 0,
 }
@@ -55,7 +56,7 @@ def infix_to_postfix(string: str) -> Queue:
     # operator)
     last_char_was_op = True
 
-    while i + 1 < len(string): # Iterate through the string
+    while i + 1 < len(string):  # Iterate through the string
         i += 1
         char = string[i]
 
@@ -76,7 +77,7 @@ def infix_to_postfix(string: str) -> Queue:
             # If the operator is a closing parenthesis, pop all operators
             # into the output until the matching opening parenthesis is found
             elif operator == Operators.RPAREN:
-                last_char_was_op = False # Parentheses are not operators
+                last_char_was_op = False  # Parentheses are not operators
                 while operator_stack.top() != Operators.LPAREN:
                     output.push(operator_stack.pop())
                 operator_stack.pop()  # Remove the opening parenthesis from the stack
@@ -84,9 +85,14 @@ def infix_to_postfix(string: str) -> Queue:
             # Pop all operators with greater precendence from the stack into the output
             # before pushing the current operator onto the stack
             else:
-                while operator_precedence[operator] <= operator_precedence[operator_stack.top()]:
+                while (
+                    operator_precedence[operator]
+                    <= operator_precedence[operator_stack.top()]
+                ):
                     output.push(operator_stack.pop())
                 operator_stack.push(operator)
+            if operator in SINGLE_OPERAND_OPERATORS:
+                last_char_was_op = False
 
         # We are expecting a number or variable, the can go directly into the output
         else:
@@ -96,7 +102,6 @@ def infix_to_postfix(string: str) -> Queue:
             # If the first character is a negative sign or a number, we have
             # a number literal to parse
             if char.isnumeric() or char == "-":
-
                 # While the next character is a number or a decimal point, append
                 # it to the buffer. Note that we obviously only allow one decimal point per
                 # number
@@ -112,9 +117,7 @@ def infix_to_postfix(string: str) -> Queue:
             elif char in ascii_letters:
                 # While the next character is alphanumeric, append it to the buffer (note that
                 # this allows for variable names to contain numbers, but not start with them)
-                while i + 1 < len(string) and (
-                    string[i+1].isalnum()
-                ):
+                while i + 1 < len(string) and (string[i + 1].isalnum()):
                     i += 1
                     buffer += string[i]
 
@@ -127,7 +130,9 @@ def infix_to_postfix(string: str) -> Queue:
             continue
 
     # Finally pop all remaining operators into the output
-    while not operator_stack.is_empty() and not operator_stack.top() == Operators.LPAREN:
+    while (
+        not operator_stack.is_empty() and not operator_stack.top() == Operators.LPAREN
+    ):
         output.push(operator_stack.pop())
 
     return output
@@ -136,5 +141,5 @@ def infix_to_postfix(string: str) -> Queue:
 if __name__ == "__main__":
     out = infix_to_postfix("res1+2")
     print(out)
-    r = eval_postfix(out, {'res1': 2})
+    r = eval_postfix(out, {"res1": 2})
     print(r)

@@ -146,6 +146,7 @@ class TestInfixToPostfix(unittest.TestCase):
 
 from McNamer_Tomas_main import pipeline, VariablesType
 
+
 class TestPipeline(unittest.TestCase):
     def test_pipeline_without_assignment(self):
         variables: VariablesType = {}
@@ -163,7 +164,7 @@ class TestPipeline(unittest.TestCase):
 
     def test_pipeline_with_assignment(self):
         variables: VariablesType = {}
-        
+
         result, variables = pipeline("a=3*2+6/4", variables)
         self.assertEqual(result, "a=7.5")
         self.assertDictContainsSubset({"a": 7.5}, variables)

@@ -30,6 +30,7 @@ class Stack:
     def __str__(self):
         return str(self.__data)
 
+
 class Queue:
     def __init__(self):
         self.__data = []

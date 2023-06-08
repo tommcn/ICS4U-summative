@@ -7,10 +7,12 @@ Helper module, it is a separate file to reduce circular imports
 # variable)
 VariablesType = dict[str, float]
 
+
 class VariableNotFound(Exception):
     """
-    Signifies that the user is using a variable for which the system as no value 
+    Signifies that the user is using a variable for which the system as no value
     """
+
 
 class ImproperExpression(Exception):
     """

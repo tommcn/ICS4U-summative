@@ -7,6 +7,7 @@ class Operators(Enum):
     MUL = "*"
     DIV = "/"
     EXP = "^"
+    FCT = "!"
     LPAREN = "("
     RPAREN = ")"
 
@@ -17,6 +18,11 @@ ops = {
     "*": Operators.MUL,
     "/": Operators.DIV,
     "^": Operators.EXP,
+    "!": Operators.FCT,
     "(": Operators.LPAREN,
-    ")": Operators.RPAREN
+    ")": Operators.RPAREN,
 }
+
+SINGLE_OPERAND_OPERATORS = [
+    Operators.FCT,
+]

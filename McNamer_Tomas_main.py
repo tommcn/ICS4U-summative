@@ -1,7 +1,6 @@
 """
 Tomas McNamer
 """
-
 from McNamer_Tomas_eval_postfix import eval_postfix
 from McNamer_Tomas_helpers import VariablesType
 from McNamer_Tomas_infix_to_postfix import infix_to_postfix
@@ -24,13 +23,14 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
     """
     varname = None
     # If the equal sign is present, then the expression is a variable assignment (eg. result=1+3)
-    # We split the expression into two parts: variable (eg. 'result') and postfix expression (eg. '1+3')
+    # We split the expression into two parts: variable (eg. 'result') and postfix
+    # expression (eg. '1+3')
     if "=" in expr:
         varname, expr = expr.split("=")
     try:
         postfix = infix_to_postfix(expr)
         result = eval_postfix(postfix, variables)
-    except Exception as exc: # pylint: disable=broad-exception-caught
+    except Exception as exc:  # pylint: disable=broad-exception-caught
         result = "E!>" + type(exc).__name__ + ": " + str(exc)
         return result, variables
 
@@ -48,16 +48,11 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
 
 
 def main():
-    """Main program, this reads from the input file, and outputs result to the output file
-    """
+    """Main program, this reads from the input file, and outputs result to the output file"""
     results = []
 
     # Start with some initial variables
-    variables = {
-        "PI": 3.14159,
-        "e": 2.71828,
-        "ANS": None
-    }
+    variables = {"PI": 3.14159, "e": 2.71828, "ANS": None}
 
     with open(IFNAME, "r", encoding="UTF-8") as input_file:
         # For each line in the input file, strip it (remove the trailing \n) and run
@@ -71,11 +66,11 @@ def main():
 
             result, variables = pipeline(line.rstrip(), variables)
             results.append(str(result) + "\n")
+            print(line, "=", str(result))
 
     with open(OFNAME, "w", encoding="UTF-8") as output_file:
         # Write the results into our output file
         output_file.writelines(results)
-
 
 
 if __name__ == "__main__":
