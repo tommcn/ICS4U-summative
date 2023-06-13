@@ -1,3 +1,9 @@
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_operators.py
+# DESCRIPTION: Houses the variables needed for operators to function
+###############################################################################
 from enum import Enum
 
 

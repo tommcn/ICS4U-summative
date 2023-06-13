@@ -1,3 +1,11 @@
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_test.py
+# DESCRIPTION: Houses the tests for the system. To run them, simply run this
+#               file
+###############################################################################
+
 import unittest
 
 from McNamer_Tomas_eval_postfix import eval_postfix
@@ -177,6 +185,6 @@ class TestPipeline(unittest.TestCase):
         self.assertEqual(result, "c=29.0")
         self.assertDictContainsSubset({"a": 7.5, "b": 7.0, "c": 29.0}, variables)
 
-
+# MAINGUARD
 if __name__ == "__main__":
     unittest.main()

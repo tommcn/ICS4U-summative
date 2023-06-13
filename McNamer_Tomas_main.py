@@ -21,7 +21,14 @@ OFNAME = "McNamer_Tomas_output.txt"
 # OUTPUTS: tuple[str | float, VariablesType] - A tuple that contains the result
 #           and the possibly modified variable dictionnary
 # ALGORITHM:
-# TODO
+#     IF expr CONTAINS '='
+#       SET varname, expr TO (SPLIT expr ON '=')\
+#     ENDIF
+#     TRY
+#       SET postfix TO (CALL infix to postfix WITH expr)
+#       SET result TO (CALL eval postfix WITH postfix, variables)
+#     EXCEPT ANY EXCEPTION
+#        SET result to 
 ###############################################################################
 def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, VariablesType]:
     varname = None
@@ -34,6 +41,9 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
         postfix = infix_to_postfix(expr)
         result = eval_postfix(postfix, variables)
     except Exception as exc:  # pylint: disable=broad-exception-caught
+        # type(exc).__name__ is the name of the exception thrown
+        #   (eg. VariableNotFound, ZeroDivisionError)
+        # str(exc) is the messages passed with the exception
         result = "E!>" + type(exc).__name__ + ": " + str(exc)
         return result, variables
 
@@ -55,7 +65,22 @@ def pipeline(expr: str, variables: VariablesType) -> tuple[str | float, Variable
 # INPUTS: None
 # OUTPUTS: None
 # ALGORITHM:
-# TODO
+#   SET result TO empty list
+#   SET variables TO initial variables
+#   WITH the input file AS input_file
+#       FOR EACH line OF input file
+#           IF line IS empty
+#               PUSH empty line TO result list
+#               GOTO beginning of for loop
+#           ENDIF
+#           SET result, variables TO (CALL pipeline WITH expression, variables)
+#           PUSH result TO results
+#           PUTS expression, result
+#       ENDFOR
+#   ENDWITH
+#   WITH the output file AS output_file
+#       WRITE results TO output_file
+#   ENDWITH
 ###############################################################################
 def main():
     """Main program, this reads from the input file, and outputs result to the output file"""
@@ -82,6 +107,6 @@ def main():
         # Write the results into our output file
         output_file.writelines(results)
 
-
+# MAINGUARD
 if __name__ == "__main__":
     main()

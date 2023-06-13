@@ -180,7 +180,7 @@ def infix_to_postfix(string: str) -> Queue:
 
     return output
 
-
+# Some example code
 if __name__ == "__main__":
     out = infix_to_postfix("res1+2")
     print(out)

@@ -50,24 +50,10 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
         if isinstance(top, Operators):
             # We need to pop the operands in reverse order as they are in a stack
             rhs = working_stack.pop()
-            # If either of the operands are variables, we need to look them up in the
-            # variables dictionary
-            if isinstance(rhs, str):
-                try:
-                    rhs = variables[rhs]
-                except KeyError as err:
-                    raise VariableNotFound(f"The variable {rhs} is undefined") from err
 
             # If the operator requires two operands
             if top not in SINGLE_OPERAND_OPERATORS:
                 lhs = working_stack.pop()
-                if isinstance(lhs, str):
-                    try:
-                        lhs = variables[lhs]
-                    except KeyError as err:
-                        raise VariableNotFound(
-                            f"The variable {lhs} is undefined"
-                        ) from err
 
             # Match the operator and do the corresponding operation
             match top:
@@ -87,6 +73,8 @@ def eval_postfix(postfix: Queue, variables: VariablesType) -> float:
                 case _:  # Should be unreachable, but just in case something goes wrong
                     raise NotImplementedError
         else:
+            # If top is a string, push its numerical representation, this serves to simplifies
+            # the math logic above
             if isinstance(top, str):
                 try:
                     top = variables[top]

@@ -1,6 +1,10 @@
-"""
-Helper module, it is a separate file to reduce circular imports
-"""
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_helpers.py
+# DESCRIPTION: Houses the definitions of some helper objects. It sits
+#               separately to prevent circular inputs
+###############################################################################
 
 # Type alias for the variable type, it represents a dictionnary with
 # string keys (the variable names) and float values (the value of the corresponding
