@@ -160,30 +160,27 @@ class TestPipeline(unittest.TestCase):
         variables: VariablesType = {}
         result, variables = pipeline("3*2+6/4", variables)
         self.assertEqual(result, 7.5)
-        self.assertDictContainsSubset({}, variables)
 
         result, variables = pipeline("1+2*3", variables)
         self.assertEqual(result, 7.0)
-        self.assertDictContainsSubset({}, variables)
 
         result, variables = pipeline("(1+2)*3", variables)
         self.assertEqual(result, 9.0)
-        self.assertDictContainsSubset({}, variables)
 
     def test_pipeline_with_assignment(self):
         variables: VariablesType = {}
 
         result, variables = pipeline("a=3*2+6/4", variables)
         self.assertEqual(result, "a=7.5")
-        self.assertDictContainsSubset({"a": 7.5}, variables)
+        self.assertEqual(variables, variables | {"a": 7.5})
 
         result, variables = pipeline("b=1+2*3", variables)
         self.assertEqual(result, "b=7.0")
-        self.assertDictContainsSubset({"a": 7.5, "b": 7.0}, variables)
+        self.assertEqual(variables, variables | {"a": 7.5, "b": 7.0})
 
         result, variables = pipeline("c=(a+b)*2", variables)
         self.assertEqual(result, "c=29.0")
-        self.assertDictContainsSubset({"a": 7.5, "b": 7.0, "c": 29.0}, variables)
+        self.assertEqual(variables, variables | {"a": 7.5, "b": 7.0, "c": 29.0})
 
 # MAINGUARD
 if __name__ == "__main__":

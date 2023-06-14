@@ -9,24 +9,9 @@ from string import ascii_letters
 
 from McNamer_Tomas_adt import Stack, Queue
 from McNamer_Tomas_helpers import ImproperExpression
-from McNamer_Tomas_operators import Operators, ops, SINGLE_OPERAND_OPERATORS
+from McNamer_Tomas_operators import Operators, ops, SINGLE_OPERAND_OPERATORS, operator_precedence
 from McNamer_Tomas_eval_postfix import eval_postfix
 
-
-# A dictionary containing the precedence of each operator
-# Greater values indicate higher precedence, this follows
-# PEMDAS, note the parentheses have the lowest precedence
-# because we already handle them separately
-operator_precedence = {
-    Operators.ADD: 1,
-    Operators.SUB: 1,
-    Operators.MUL: 5,
-    Operators.DIV: 5,
-    Operators.EXP: 10,
-    Operators.FCT: 15,
-    Operators.RPAREN: 0,
-    Operators.LPAREN: 0,
-}
 
 ###############################################################################
 # FCN NAME: infix_to_postfix

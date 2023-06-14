@@ -1,3 +1,16 @@
+###############################################################################
+# NAME: Tomas McNamer
+# COURSE: ICS4U
+# FILE: McNamer_Tomas_adt.py
+# DESCRIPTION: Houses the Abstract Data Classes (ADT) which are used to store
+#                   These are essentially utility classes.
+###############################################################################
+
+
+###############################################################################
+# CLS NAME: Stack
+# DESCRIPTION: Implements a simple stack using python's builtins lists (FILO)
+###############################################################################
 class Stack:
     def __init__(self):
         self.__data = []
@@ -8,6 +21,7 @@ class Stack:
     @classmethod
     def from_list(cls, data):
         new = cls()
+        # Reverse the list since we are popping from the end
         new._set_stack(data[::-1])
         return new
 
@@ -30,7 +44,10 @@ class Stack:
     def __str__(self):
         return str(self.__data)
 
-
+###############################################################################
+# CLS NAME: Queue
+# DESCRIPTION: Implements a simple queue using python's builtins lists (FIFO)
+###############################################################################
 class Queue:
     def __init__(self):
         self.__data = []
